@@ -4,18 +4,30 @@ const express = require("express");
 
 const Customer = require("./models/customer");
 const Reservation = require("./models/reservation");
+const db = require('./db');
 
 const router = new express.Router();
 
 /** Homepage: show list of customers. */
 
-router.get("/", async function(req, res, next) {
-  try {
-    const customers = await Customer.all();
-    return res.render("customer_list.html", { customers });
-  } catch (err) {
-    return next(err);
-  }
+router.get('/', async function (req, res, next) {
+	try {
+		const customers = await Customer.all();
+		return res.render('customer_list.html', { customers });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+/** Homepage: show customer search results */
+
+router.get('/search/', async function (req, res, next) {
+	try {
+		const customers = await Customer.search(req.query.search);
+		return res.render('customer_list.html', { customers });
+	} catch (err) {
+		return next(err);
+	}
 });
 
 /** Form to add a new customer. */
