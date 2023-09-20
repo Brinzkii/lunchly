@@ -56,6 +56,19 @@ class Customer {
 		return results.rows.map((c) => new Customer(c));
 	}
 
+	/** get top 10 customers */
+
+	static async top() {
+		const results = await db.query(
+			`SELECT customer_id
+			FROM reservations
+			GROUP BY customer_id
+			ORDER BY COUNT(*) DESC
+			LIMIT 10`
+		);
+		return results.rows.map((c) => Customer.get(c.customer_id));
+	}
+
 	/** get a customer by ID. */
 
 	static async get(id) {

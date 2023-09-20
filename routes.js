@@ -19,6 +19,18 @@ router.get('/', async function (req, res, next) {
 	}
 });
 
+/** Homepage: show top customers */
+
+router.get('/top-customers/', async function (req, res, next) {
+  try {
+    let customers = await Customer.top()
+    customers = await Promise.all(customers)
+    return res.render('customer_list_top.html', { customers })
+  } catch (err) {
+    return next(err)
+  }
+})
+
 /** Homepage: show customer search results */
 
 router.get('/search/', async function (req, res, next) {
